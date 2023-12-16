@@ -39,6 +39,9 @@ module Top(
     // Divided Clock
     logic clk;
 
+    // Instruction
+    logic [31:0] instruction;
+
     // Register enable logic
     logic programCounterEnable;
 
@@ -75,7 +78,7 @@ module Top(
 
     // Register Multiplexors
     logic regFileInputASourceSelect;
-    logic regFileWriteDataSourceSelect
+    logic regFileWriteDataSourceSelect;
 
     logic regFileInputA;
     logic regFileWriteData;
@@ -102,14 +105,14 @@ module Top(
     logic [31:0] instructionRegOut;
     genvar i;
     generate 
-        for(i = 0; i < instructionWidth / busWidth; i++ ){
+        for(i = 0; i < instructionWidth / busWidth; i++ ) begin
             register #(.BIT_WIDTH(busWidth)) instructionRegI(
                 .writeEnable(instructionRegWrite[i]),
                 .clk(clk),
                 .inData(memoryOut),
-                .outData(instructionRegOut{i * busWidth : (i + 1) * busWidth - 1})
+                .outData(instructionRegOut[i * busWidth : (i + 1) * busWidth - 1])
             );
-        }
+        end
     endgenerate
 
     register #(.BIT_WIDTH(instructionWidth)) memDataReg(
@@ -152,7 +155,7 @@ module Top(
     );
     genericMux #(.WIDTH(busWidth), .NUMBER(4)) ALUSourceBMux(
         .sel(ALUSourceControlB),
-        .mux_in({immediate, {immediate[0 +: busWidth - 2], 2'b0}, {busWidth - 1{1'b0}, 1'b1}, RegFileBDataOut}),
+        .mux_in({instruction[busWidth - 1:0], {instruction[(busWidth + 1)+:(busWidth - 1)], 2'b0}, {{(busWidth - 1){1'b0}}, 1'b1}, RegFileBDataOut}),
         .out(aluInputB)
     );
     genericMux #(.WIDTH(busWidth), .NUMBER(2)) memoryAddressMux(
@@ -162,12 +165,12 @@ module Top(
     );
     genericMux #(.WIDTH(busWidth), .NUMBER(4)) PCMux(
         .sel(programCounterSourceSelect),
-        .mux_in({{busWidth{1'bz}}, {immediate[0 +: busWidth - 2], 2'b0}, aluResultOut, ALUout}),
+        .mux_in({{busWidth{1'bz}}, {instruction[(busWidth + 1)+:(busWidth - 1)], 2'b0}, aluResultOut, ALUout}),
         .out(aluInputB)
     );
     genericMux #(.WIDTH(registerAddressWidth), .NUMBER(2)) regFile1InputMux(
         .sel(regFileInputASourceSelect),
-        .mux_in({instruction[15:8], instruction{23:16}}),
+        .mux_in({instruction[15:8], instruction[23:16]}),
         .out(regFileInputA)
     );
     genericMux #(.WIDTH(busWidth), .NUMBER(2)) regFileDataWriteMux(

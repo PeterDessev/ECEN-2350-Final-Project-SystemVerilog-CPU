@@ -10,79 +10,9 @@
     ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
 
 source Top.tcl -notrace
+create_project: Time (s): cpu = 00:00:05 ; elapsed = 00:00:05 . Memory (MB): peak = 375.125 ; gain = 64.961
 Command: synth_design -top Top -part xc7a35tcpg236-1
 Starting synth_design
 Attempting to get a license for feature 'Synthesis' and/or device 'xc7a35t'
 INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7a35t'
 INFO: [Device 21-403] Loading part xc7a35tcpg236-1
-INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 2 processes.
-INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
-INFO: [Synth 8-7075] Helper process launched with PID 9100
-INFO: [Synth 8-11241] undeclared symbol 'REGCCE', assumed default net type 'wire' [C:/Xilinx/Vivado/2022.2/data/verilog/src/unimacro/BRAM_SINGLE_MACRO.v:2170]
-INFO: [Synth 8-11241] undeclared symbol 'memoryAddressSelect', assumed default net type 'wire' [C:/Users/Peter/Documents/Homework/ECEN 2350 Digital Logic/final/ecen2350Final.srcs/sources_1/new/Top.sv:151]
----------------------------------------------------------------------------------
-Starting RTL Elaboration : Time (s): cpu = 00:00:05 ; elapsed = 00:00:06 . Memory (MB): peak = 1182.992 ; gain = 408.016
----------------------------------------------------------------------------------
-INFO: [Synth 8-6157] synthesizing module 'Top' [C:/Users/Peter/Documents/Homework/ECEN 2350 Digital Logic/final/ecen2350Final.srcs/sources_1/new/Top.sv:23]
-INFO: [Synth 8-6157] synthesizing module 'register' [C:/Users/Peter/Documents/Homework/ECEN 2350 Digital Logic/final/ecen2350Final.srcs/sources_1/new/register.sv:11]
-	Parameter BIT_WIDTH bound to: 8 - type: integer 
-INFO: [Synth 8-6157] synthesizing module 'DFF' [C:/Users/Peter/Documents/Homework/ECEN 2350 Digital Logic/final/ecen2350Final.srcs/sources_1/new/DFF.sv:23]
-INFO: [Synth 8-6155] done synthesizing module 'DFF' (0#1) [C:/Users/Peter/Documents/Homework/ECEN 2350 Digital Logic/final/ecen2350Final.srcs/sources_1/new/DFF.sv:23]
-INFO: [Synth 8-6155] done synthesizing module 'register' (0#1) [C:/Users/Peter/Documents/Homework/ECEN 2350 Digital Logic/final/ecen2350Final.srcs/sources_1/new/register.sv:11]
-INFO: [Synth 8-6157] synthesizing module 'register__parameterized0' [C:/Users/Peter/Documents/Homework/ECEN 2350 Digital Logic/final/ecen2350Final.srcs/sources_1/new/register.sv:11]
-	Parameter BIT_WIDTH bound to: 32 - type: integer 
-INFO: [Synth 8-6155] done synthesizing module 'register__parameterized0' (0#1) [C:/Users/Peter/Documents/Homework/ECEN 2350 Digital Logic/final/ecen2350Final.srcs/sources_1/new/register.sv:11]
-WARNING: [Synth 8-689] width (8) of port connection 'outData' does not match port width (32) of module 'register__parameterized0' [C:/Users/Peter/Documents/Homework/ECEN 2350 Digital Logic/final/ecen2350Final.srcs/sources_1/new/Top.sv:92]
-INFO: [Synth 8-6157] synthesizing module 'genericMux' [C:/Users/Peter/Documents/Homework/ECEN 2350 Digital Logic/final/ecen2350Final.srcs/sources_1/new/genericMux.sv:23]
-	Parameter WIDTH bound to: 8 - type: integer 
-	Parameter NUMBER bound to: 2 - type: integer 
-INFO: [Synth 8-6155] done synthesizing module 'genericMux' (0#1) [C:/Users/Peter/Documents/Homework/ECEN 2350 Digital Logic/final/ecen2350Final.srcs/sources_1/new/genericMux.sv:23]
-INFO: [Synth 8-6157] synthesizing module 'genericMux__parameterized0' [C:/Users/Peter/Documents/Homework/ECEN 2350 Digital Logic/final/ecen2350Final.srcs/sources_1/new/genericMux.sv:23]
-	Parameter WIDTH bound to: 8 - type: integer 
-	Parameter NUMBER bound to: 4 - type: integer 
-INFO: [Synth 8-6155] done synthesizing module 'genericMux__parameterized0' (0#1) [C:/Users/Peter/Documents/Homework/ECEN 2350 Digital Logic/final/ecen2350Final.srcs/sources_1/new/genericMux.sv:23]
-INFO: [Synth 8-6157] synthesizing module 'ALU_t' [C:/Users/Peter/Documents/Homework/ECEN 2350 Digital Logic/final/ecen2350Final.srcs/sources_1/new/ALU_t.sv:23]
-	Parameter BIT_WIDTH bound to: 8 - type: integer 
-	Parameter OP_CODE_WIDTH bound to: 4 - type: integer 
-	Parameter STATUS_WIDTH bound to: 4 - type: integer 
-INFO: [Synth 8-6155] done synthesizing module 'ALU_t' (0#1) [C:/Users/Peter/Documents/Homework/ECEN 2350 Digital Logic/final/ecen2350Final.srcs/sources_1/new/ALU_t.sv:23]
-WARNING: [Synth 8-4446] all outputs are unconnected for this instance and logic may be removed [C:/Users/Peter/Documents/Homework/ECEN 2350 Digital Logic/final/ecen2350Final.srcs/sources_1/new/Top.sv:147]
-INFO: [Synth 8-6157] synthesizing module 'registerFile_t' [C:/Users/Peter/Documents/Homework/ECEN 2350 Digital Logic/final/ecen2350Final.srcs/sources_1/new/registerFile_t.sv:17]
-	Parameter BIT_WIDTH bound to: 8 - type: integer 
-INFO: [Synth 8-6157] synthesizing module 'genericDeMux' [C:/Users/Peter/Documents/Homework/ECEN 2350 Digital Logic/final/ecen2350Final.srcs/sources_1/new/genericDeMux.sv:24]
-	Parameter WIDTH bound to: 8 - type: integer 
-	Parameter NUMBER bound to: 4 - type: integer 
-INFO: [Synth 8-6155] done synthesizing module 'genericDeMux' (0#1) [C:/Users/Peter/Documents/Homework/ECEN 2350 Digital Logic/final/ecen2350Final.srcs/sources_1/new/genericDeMux.sv:24]
-WARNING: [Synth 8-689] width (3) of port connection 'sel' does not match port width (2) of module 'genericDeMux' [C:/Users/Peter/Documents/Homework/ECEN 2350 Digital Logic/final/ecen2350Final.srcs/sources_1/new/registerFile_t.sv:56]
-WARNING: [Synth 8-689] width (32) of port connection 'enable' does not match port width (1) of module 'genericDeMux' [C:/Users/Peter/Documents/Homework/ECEN 2350 Digital Logic/final/ecen2350Final.srcs/sources_1/new/registerFile_t.sv:58]
-INFO: [Synth 8-6157] synthesizing module 'genericDeMux__parameterized0' [C:/Users/Peter/Documents/Homework/ECEN 2350 Digital Logic/final/ecen2350Final.srcs/sources_1/new/genericDeMux.sv:24]
-	Parameter WIDTH bound to: 1 - type: integer 
-	Parameter NUMBER bound to: 4 - type: integer 
-WARNING: [Synth 8-324] index 1 out of range [C:/Users/Peter/Documents/Homework/ECEN 2350 Digital Logic/final/ecen2350Final.srcs/sources_1/new/genericDeMux.sv:36]
-WARNING: [Synth 8-324] index 2 out of range [C:/Users/Peter/Documents/Homework/ECEN 2350 Digital Logic/final/ecen2350Final.srcs/sources_1/new/genericDeMux.sv:36]
-WARNING: [Synth 8-324] index 3 out of range [C:/Users/Peter/Documents/Homework/ECEN 2350 Digital Logic/final/ecen2350Final.srcs/sources_1/new/genericDeMux.sv:36]
-INFO: [Synth 8-6155] done synthesizing module 'genericDeMux__parameterized0' (0#1) [C:/Users/Peter/Documents/Homework/ECEN 2350 Digital Logic/final/ecen2350Final.srcs/sources_1/new/genericDeMux.sv:24]
-WARNING: [Synth 8-689] width (3) of port connection 'sel' does not match port width (2) of module 'genericDeMux' [C:/Users/Peter/Documents/Homework/ECEN 2350 Digital Logic/final/ecen2350Final.srcs/sources_1/new/registerFile_t.sv:65]
-INFO: [Synth 8-6155] done synthesizing module 'registerFile_t' (0#1) [C:/Users/Peter/Documents/Homework/ECEN 2350 Digital Logic/final/ecen2350Final.srcs/sources_1/new/registerFile_t.sv:17]
-WARNING: [Synth 8-7071] port 'inAddrA' of module 'registerFile_t' is unconnected for instance 'registerFile' [C:/Users/Peter/Documents/Homework/ECEN 2350 Digital Logic/final/ecen2350Final.srcs/sources_1/new/Top.sv:147]
-WARNING: [Synth 8-7071] port 'inAddrB' of module 'registerFile_t' is unconnected for instance 'registerFile' [C:/Users/Peter/Documents/Homework/ECEN 2350 Digital Logic/final/ecen2350Final.srcs/sources_1/new/Top.sv:147]
-WARNING: [Synth 8-7071] port 'inAddrC' of module 'registerFile_t' is unconnected for instance 'registerFile' [C:/Users/Peter/Documents/Homework/ECEN 2350 Digital Logic/final/ecen2350Final.srcs/sources_1/new/Top.sv:147]
-WARNING: [Synth 8-7071] port 'inData' of module 'registerFile_t' is unconnected for instance 'registerFile' [C:/Users/Peter/Documents/Homework/ECEN 2350 Digital Logic/final/ecen2350Final.srcs/sources_1/new/Top.sv:147]
-WARNING: [Synth 8-7071] port 'writeEnable' of module 'registerFile_t' is unconnected for instance 'registerFile' [C:/Users/Peter/Documents/Homework/ECEN 2350 Digital Logic/final/ecen2350Final.srcs/sources_1/new/Top.sv:147]
-WARNING: [Synth 8-7071] port 'clk' of module 'registerFile_t' is unconnected for instance 'registerFile' [C:/Users/Peter/Documents/Homework/ECEN 2350 Digital Logic/final/ecen2350Final.srcs/sources_1/new/Top.sv:147]
-WARNING: [Synth 8-7071] port 'outDataA' of module 'registerFile_t' is unconnected for instance 'registerFile' [C:/Users/Peter/Documents/Homework/ECEN 2350 Digital Logic/final/ecen2350Final.srcs/sources_1/new/Top.sv:147]
-WARNING: [Synth 8-7071] port 'outDataB' of module 'registerFile_t' is unconnected for instance 'registerFile' [C:/Users/Peter/Documents/Homework/ECEN 2350 Digital Logic/final/ecen2350Final.srcs/sources_1/new/Top.sv:147]
-WARNING: [Synth 8-7023] instance 'registerFile' of module 'registerFile_t' has 8 connections declared, but only 0 given [C:/Users/Peter/Documents/Homework/ECEN 2350 Digital Logic/final/ecen2350Final.srcs/sources_1/new/Top.sv:147]
-INFO: [Synth 8-6157] synthesizing module 'CU_t' [C:/Users/Peter/Documents/Homework/ECEN 2350 Digital Logic/final/ecen2350Final.srcs/sources_1/new/CU_t.sv:12]
-INFO: [Synth 8-6155] done synthesizing module 'CU_t' (0#1) [C:/Users/Peter/Documents/Homework/ECEN 2350 Digital Logic/final/ecen2350Final.srcs/sources_1/new/CU_t.sv:12]
-ERROR: [Synth 8-359] invalid assignment pattern [C:/Users/Peter/Documents/Homework/ECEN 2350 Digital Logic/final/ecen2350Final.srcs/sources_1/new/Top.sv:152]
-ERROR: [Synth 8-6156] failed synthesizing module 'Top' [C:/Users/Peter/Documents/Homework/ECEN 2350 Digital Logic/final/ecen2350Final.srcs/sources_1/new/Top.sv:23]
----------------------------------------------------------------------------------
-Finished RTL Elaboration : Time (s): cpu = 00:00:07 ; elapsed = 00:00:07 . Memory (MB): peak = 1272.770 ; gain = 497.793
----------------------------------------------------------------------------------
-RTL Elaboration failed
-INFO: [Common 17-83] Releasing license: Synthesis
-29 Infos, 17 Warnings, 0 Critical Warnings and 3 Errors encountered.
-synth_design failed
-ERROR: [Common 17-69] Command failed: Synthesis failed - please see the console or run log file for details
-INFO: [Common 17-206] Exiting Vivado at Fri Dec 15 18:37:16 2023...
