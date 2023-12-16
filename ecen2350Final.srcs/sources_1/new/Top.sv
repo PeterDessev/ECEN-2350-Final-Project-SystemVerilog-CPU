@@ -105,12 +105,12 @@ module Top(
     logic [31:0] instructionRegOut;
     genvar i;
     generate 
-        for(i = 0; i < instructionWidth / busWidth; i++ ) begin
+        for(i = 0; i < (instructionWidth / busWidth); i++ ) begin
             register #(.BIT_WIDTH(busWidth)) instructionRegI(
                 .writeEnable(instructionRegWrite[i]),
                 .clk(clk),
                 .inData(memoryOut),
-                .outData(instructionRegOut[i * busWidth : (i + 1) * busWidth - 1])
+                .outData(instructionRegOut[(i + 1) * busWidth - 1 : i * busWidth])
             );
         end
     endgenerate
