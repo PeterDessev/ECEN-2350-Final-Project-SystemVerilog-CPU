@@ -14,6 +14,10 @@ module register #(parameter BIT_WIDTH=8)
      input [BIT_WIDTH-1:0] inData,
      output logic [BIT_WIDTH-1:0] outData);
 
+    initial begin
+        outData <= {BIT_WIDTH{1'b0}};
+    end
+
     always @(posedge(clk)) begin
         if (writeEnable) begin
             outData <= inData;
