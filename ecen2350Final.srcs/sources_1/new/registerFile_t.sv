@@ -23,7 +23,12 @@ module registerFile_t #(parameter BIT_WIDTH = 8,
     input writeEnable,
     input clk,
     output logic [BIT_WIDTH - 1:0]outDataA,
-    output logic [BIT_WIDTH - 1:0]outDataB
+    output logic [BIT_WIDTH - 1:0]outDataB,
+    input [7:0] inputSwitches,
+    input [4:0] buttons,
+    output [6:0] segment,
+    output [3:0] segSelect,
+    output [8:0] LEDs
     );
     // parameter int register
     // DFF flipFlopZero(.data(write[0]), .clk(clk), .Q(read[0]));
@@ -34,7 +39,7 @@ module registerFile_t #(parameter BIT_WIDTH = 8,
 
     genvar i;
     generate
-        for (i = 0; i < REGISTER_COUNT - 1; i ++) begin
+        for (i = 1; i < REGISTER_COUNT; i ++) begin
             register #(.BIT_WIDTH(BIT_WIDTH)) registerI(
                 .writeEnable(registerWriteEnableLogic[i]),
                 .clk(clk),
@@ -48,14 +53,14 @@ module registerFile_t #(parameter BIT_WIDTH = 8,
 //    genericMux #(.WIDTH(BIT_WIDTH), .NUMBER(REGISTER_COUNT)) bMux(.sel(inAddrB), registerOutputLogic, outDataB);
 
 //    genericMux #(.WIDTH(BIT_WIDTH), .NUMBER(REGISTER_COUNT)) cMux(.sel(inAddrC), registerInputLogic, outDataA);
-    assign outDataA = writeEnable == 0 ? registerOutputLogic[inAddrA] : {BIT_WIDTH{1'b0}};
-    assign outDataB = writeEnable == 0 ? registerOutputLogic[inAddrB] : {BIT_WIDTH{1'b0}};
+    assign outDataA = writeEnable == 0 && inAddrA > 0 ? registerOutputLogic[inAddrA] : {BIT_WIDTH{1'b0}};
+    assign outDataB = writeEnable == 0 && inAddrB > 0 ? registerOutputLogic[inAddrB] : {BIT_WIDTH{1'b0}};
     genericDeMux #(.WIDTH(BIT_WIDTH), 
                    .NUMBER(REGISTER_COUNT)
                   ) writeDataDeMux(
                         .sel(inAddrC), 
                         .in(inData), 
-                        .enable(1),
+                        .enable(writeEnable),
                         .deMuxOut(registerInputLogic)
                     );
 
