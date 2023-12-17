@@ -10,7 +10,7 @@
 // Target Devices: 
 // Tool Versions: 
 // Description: 
-// 
+//      ALU status:|  |  | zero | carry |
 // Dependencies: 
 // 
 // Revision:
@@ -37,28 +37,36 @@ module ALU_t #(parameter BIT_WIDTH=8,
 
     always_comb
         case (op)
-            4'b0000:  // add
-                q <= a + b;
-            4'b0001: // sub
-                q <= a - b;
-            4'b0010: // inc
-                q <= a + 1;
-            4'b0011: // dec
-                q <= a - 1;
+            4'b0000: begin  // add
+                q = a + b;
+                states = a + b == 0 ? 4'b0001 : 4'b0000;
+            end
+            4'b0001: begin // sub
+                q = a - b;
+                states = a - b == 0 ? 4'b0010 : 4'b0000;
+            end
+            4'b0010: begin // inc
+                q = b + 1;
+                states = b + 1 == 0 ? 4'b0001 : 4'b0000;
+            end
+            4'b0011: begin // dec
+                q = b - 1;
+                states = b - 1 == 0 ? 4'b0010 : 4'b0000;
+            end
             4'b0100: // and
-                q <= a & b;
+                q = a & b;
             4'b0101: // or
-                q <= a | b;
+                q = a | b;
             4'b0110: // not
-                q <= ~a;
+                q = ~b;
             4'b0111: // xor
-                q <= a ^ b;
+                q = a ^ b;
             4'b1000: // shl
-                q <= {a[BIT_WIDTH - 2:0], 1'b0};
+                q = {b[BIT_WIDTH - 2:0], 1'b0};
                 // q <= a << b;
             4'b1001: // shr
                 // q <= a >> b;
-                q <= {1'b0, a[BIT_WIDTH - 1:1]};
+                q = {1'b0, b[BIT_WIDTH - 1:1]};
             default: begin
             end
         endcase

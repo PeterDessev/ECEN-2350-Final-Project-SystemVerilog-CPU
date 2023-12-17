@@ -21,12 +21,12 @@
 
 
 module Top(
-    input [7:0] inputSwitch,
-    input button,
+    input [7:0] inputSwitches,
+    input [4:0] buttons,
     input clkIn,
     output [6:0] segment,
     output [3:0] segSelect,
-    output [8:0] LED
+    output [7:0] LEDs
     );
 
     parameter int busWidth = 8;
@@ -44,6 +44,7 @@ module Top(
 
     // Register enable logic
     logic programCounterEnable;
+    logic registerFileWrite;
 
     // ALU
     logic ALUStatus;
@@ -60,13 +61,15 @@ module Top(
     logic [busWidth - 1:0] RegFileADataOut;
     logic [busWidth - 1:0] RegFileBDataOut;
     logic [busWidth - 1:0] aluResultOut;
+    logic [busWidth - 1:0] registerFileResultA;
+    logic [busWidth - 1:0] registerFileResultB;
 
     // ALU inputs
     logic [busWidth - 1:0] aluInputA;
     logic [busWidth - 1:0] aluInputB;
     logic [ALUOpCodeWidth - 1:0] aluOpCode;
     logic ALUSourceControlA;
-    logic [3:0]ALUSourceControlB;
+    logic [1:0]ALUSourceControlB;
 
     // Memory
     logic [busWidth - 1:0] memoryAddress;
@@ -77,10 +80,10 @@ module Top(
     logic [1:0]programCounterSourceSelect;
 
     // Register Multiplexors
-    logic regFileInputASourceSelect;
+    logic regFileInputCSourceSelect;
     logic regFileWriteDataSourceSelect;
 
-    logic regFileInputA;
+    logic regFileInputC;
     logic regFileWriteData;
     
     // Non-register file registers
@@ -132,13 +135,13 @@ module Top(
     register #(.BIT_WIDTH(busWidth)) registerFileOutA(
         .writeEnable(1),
         .clk(clk),
-        .inData(),
+        .inData(registerFileResultA),
         .outData(RegFileADataOut)
     );
     register #(.BIT_WIDTH(busWidth)) registerFileOutB(
         .writeEnable(1),
         .clk(clk),
-        .inData(),
+        .inData(registerFileResultB),
         .outData(RegFileBDataOut)
     );
 
@@ -155,7 +158,7 @@ module Top(
     );
     genericMux #(.WIDTH(busWidth), .NUMBER(4)) ALUSourceBMux(
         .sel(ALUSourceControlB),
-        .mux_in({instruction[busWidth - 1:0], {instruction[(busWidth + 1)+:(busWidth - 1)], 2'b0}, {{(busWidth - 1){1'b0}}, 1'b1}, RegFileBDataOut}),
+        .mux_in({instruction[busWidth - 1:0], {instruction[busWidth - 3 : 0], 2'b0}, {{(busWidth - 1){1'b0}}, 1'b1}, RegFileBDataOut}),
         .out(aluInputB)
     );
     genericMux #(.WIDTH(busWidth), .NUMBER(2)) memoryAddressMux(
@@ -165,13 +168,13 @@ module Top(
     );
     genericMux #(.WIDTH(busWidth), .NUMBER(4)) PCMux(
         .sel(programCounterSourceSelect),
-        .mux_in({{busWidth{1'bz}}, {instruction[(busWidth + 1)+:(busWidth - 1)], 2'b0}, aluResultOut, ALUout}),
+        .mux_in({{busWidth{1'bz}}, {instruction[busWidth - 3 : 0], 2'b0}, aluResultOut, ALUout}),
         .out(aluInputB)
     );
-    genericMux #(.WIDTH(registerAddressWidth), .NUMBER(2)) regFile1InputMux(
-        .sel(regFileInputASourceSelect),
-        .mux_in({instruction[15:8], instruction[23:16]}),
-        .out(regFileInputA)
+    genericMux #(.WIDTH(registerAddressWidth), .NUMBER(2)) regFileCInputMux(
+        .sel(regFileInputCSourceSelect),
+        .mux_in({instruction[19:16], instruction[15:12]}),
+        .out(regFileInputC)
     );
     genericMux #(.WIDTH(busWidth), .NUMBER(2)) regFileDataWriteMux(
         .sel(regFileWriteDataSourceSelect),
@@ -189,15 +192,20 @@ module Top(
         .status(ALUStatus)
     );
 
-    registerFile_t #(.BIT_WIDTH(busWidth)) registerFile(
-            .inAddrA(regFileInputA),
-            .inAddrB(instruction[7:0]),
-            .inAddrC(instruction[23:16]),
+    registerFile_t #(.BIT_WIDTH(busWidth), .REGISTER_COUNT(4), .registerAddressWidth(4)) registerFile(
+            .inAddrA(instruction[23:20]),
+            .inAddrB(instruction[19:16]),
+            .inAddrC(regFileInputC),
             .inData(regFileWriteData),
-            .writeEnable(),
+            .writeEnable(registerFileWrite),
             .clk(clk),
-            .outDataA(),
-            .outDataB()
+            .outDataA(registerFileResultA),
+            .outDataB(registerFileResultB),
+            .inputSwitches(inputSwitches), 
+            .buttons(buttons), 
+            .segment(segment), 
+            .segSelect(segSelect), 
+            .LEDs(LEDs)
     );
     
     memory_t #(.BUS_WIDTH(busWidth)) memory(
@@ -209,7 +217,7 @@ module Top(
     );
     
 
-    CU_t controlUnit();
+    controlUnit_t controlUnit(.*);
     always @(posedge(clk)) begin
 
     end    

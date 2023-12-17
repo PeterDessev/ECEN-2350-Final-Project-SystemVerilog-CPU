@@ -1,21 +1,45 @@
-| Instruction Name | Description                                                                                     | Example      | Bit Map                                              |
-| ---------------- | ----------------------------------------------------------------------------------------------- | ------------ | ---------------------------------------------------- |
-|                  |                                                                                                 |              | \|31 -- 24\|23 -- 16\|15 -- 8\|7 -- 0\| |
-| add              | Adds $1 and $2, storing the output in $3                                                        | add $3 $1 $2 | \|00000000\|storeAddr\|source1Addr\|source2addr\|    |
-| sub              | Subtracts from $1 $2 ($1 - $2), storing the output in $3                                        | sub $3 $1 $2 | \|00000001\|storeAddr\|minuendAddr\|subtrahendAddr\| |
-| inc              | Incrememnts $1 by 1                                                                             | inc $1       | \|00000010\|Addr\|                                   |
-| dec              | Decremenets $1 by 1                                                                             | dec $1       | \|00000011\|Addr\|                                   |
-| and              | Performs a bitwise and between $1 and $2, storing the output in $3                              | and $3 $1 $2 | \|00000100\|storeAddr\|sorce1Addr\|source2addr\|     |
-| or               | Performs a bitwise or between $1 and $2, storing the output in $3                               | or $3 $1 $2  | \|00000101\|storeAddr\|sorce1Addr\|source2addr\|     |
-| not              | Performs a bitwise not on $1                                                                    | not $1       | \|00000110\|Addr\|                                   |
-| xor              | Performs a bitwise xor on $1 and $2, storing the output in $3                                   | xor $3 $1 $2 | \|00000111\|storeAddr\|sorce1Addr\|source2addr\|     |
-| shl              | Shifts $1 left by 1                                                                             | shl $1       | \|00000110\|Addr\|                                   |
-| shr              | Shifts $1 right by 1                                                                            | shr $1       | \|00000110\|Addr\|                                   |
-| st               | Stores the contents of $2 in memory at address $1                                               | st $1 $2     | \|00000111\|memAddr\|dataAddr\|                      |
-| ld               | Loads the data from memory address $1 into $2                                                   | ld $1 $2     | \|00001000\|memAddr\|destAddr\|                      |
-| jmp              | jumps to memory address stored in $1 multiplying by 2 as needed to align the address on 32 bits | jmp $1       | \|00001001\|jumpLocAddr\|                            |
-| beq              | jumps to $1 if $2 and $3 are equal                                                              | beq $1 $2 $3 | \|00001010\|jumpLocAddr\|sorce1Addr\|source2addr\|   |
+| Name | Description                                                        | Example       | Bit Map                                                                  | impld |
+| ---- | ------------------------------------------------------------------ | ------------- | ------------------------------------------------------------------------ | ----- |
+| bit  | Not an instruction, shows bit boundaries in the table              | N/A           | \|31 -- 24\|23 -- 20\|19 -- 16\|15 -- 12\|11 --  8\|7  --  5\|4  --  0\| |       |
+|      |                                                                    |               | \|        \|        \|        \|        \|        \|        \|        \| |       |
+| add  | Adds $1 and $2, storing the output in $3                           | add $3 $1 $2  | \|00000000\|   $1   \|   $2   \|   $3   \|  0000  \|  0000  \|  0000  \| |       |
+| sub  | Subtracts from $1 $2 ($1 - $2), storing the output in $3           | sub $3 $1 $2  | \|00000001\|   $1   \|   $2   \|   $3   \|  0000  \|  0000  \|  0000  \| |       |
+| and  | Performs a bitwise and between $1 and $2, storing the output in $3 | and $3 $1 $2  | \|00000010\|   $1   \|   $2   \|   $3   \|  0000  \|  0000  \|  0000  \| |       |
+| or   | Performs a bitwise or between $1 and $2, storing the output in $3  | or $3 $1 $2   | \|00000011\|   $1   \|   $2   \|   $3   \|  0000  \|  0000  \|  0000  \| |       |
+| xor  | Performs a bitwise xor on $1 and $2, storing the output in $3      | xor $3 $1 $2  | \|00000100\|   $1   \|   $2   \|   $3   \|  0000  \|  0000  \|  0000  \| |       |
+|      |                                                                    |               | \|        \|        \|        \|        \|        \|        \|        \| |       |
+| beq  | jumps to Imm* if $1 and $2 are equal                               | beq $2 $3 Imm | \|00100000\|   $1   \|   $2   \|  0000  \|  0000  \|  ImmH  \|  ImmL  \| | x     |
+|      |                                                                    |               | \|        \|        \|        \|        \|        \|        \|        \| |       |
+| st   | Stores the contents of $2 in memory at address $1                  | st $1 $2      | \|01100000\|   $1   \|   $2   \|  0000  \|  0000  \|  0000  \|  0000  \| | x     |
+| ld   | Loads the data from memory address $1 into $2                      | ld $1 $2      | \|01100001\|   $1   \|   $2   \|  0000  \|  0000  \|  0000  \|  0000  \| | x     |
+|      |                                                                    |               | \|        \|        \|        \|        \|        \|        \|        \| |       |
+| inc  | Incrememnts $1 by 1                                                | inc $1        | \|00000001\|  0000  \|   $1   \|  0000  \|  0000  \|  0000  \|  0000  \| | x     |
+| dec  | Decremenets $1 by 1                                                | dec $1        | \|00000010\|  0000  \|   $1   \|  0000  \|  0000  \|  0000  \|  0000  \| | x     |
+| not  | Performs a bitwise not on $1                                       | not $1        | \|00000011\|  0000  \|   $1   \|  0000  \|  0000  \|  0000  \|  0000  \| | x     |
+| shl  | Shifts $1 left by 1                                                | shl $1        | \|00000100\|  0000  \|   $1   \|  0000  \|  0000  \|  0000  \|  0000  \| | x     |
+| shr  | Shifts $1 right by 1                                               | shr $1        | \|00000101\|  0000  \|   $1   \|  0000  \|  0000  \|  0000  \|  0000  \| | x     |
+|      |                                                                    |               | \|        \|        \|        \|        \|        \|        \|        \| |       |
+| jmp  | jumps to memory address Imm*                                       | jmp Imm       | \|00100000\|  0000  \|  0000  \|  0000  \|  0000  \|  ImmH  \|  ImmL  \| | x     |
+|      |                                                                    |               | \|        \|        \|        \|        \|        \|        \|        \| |       |
+| sti  | Stores the contents of $1 into memory at Imm                       | sti $1 Imm    | \|00100000\|  0000  \|   $1   \|  0000  \|  0000  \|  ImmH  \|  ImmL  \| | x     |
+| ldi  | Loads the contents of memory at Imm into $1                        | ldi $1 Imm    | \|00100001\|  0000  \|   $1   \|  0000  \|  0000  \|  ImmH  \|  ImmL  \| | x     |
+|      |                                                                    |               |                                                                          |       |
 
+This most significant 3 bits of an instruction have the following meanings:
+| bits | meaning                                      |
+| ---- | -------------------------------------------- |
+| 000  | Tripple argument arithmetic operation        |
+| 001  | Double argument instruction-memory operation |
+| 010  | Double argument memory operation             |
+| 011  | Single argument arithmetic operation         |
+| 100  | Single argument instruction-memory operation |
+| 101  | Single argument memory operation             |
+| 110  | Reserved                                     |
+| 111  | Reserved                                     |
+<!-- Register file input A is connected to bits 23:20, B to 19:16, and C to {1: 19:16, 0: 15:12} -->
+> \*Imm in this case will be aligned to instruction space throlugh multiplication by 2, on 4 byte boundaries, unlike store and load commands, which are aligned on 1 byte boundaries.
+
+<!-- \|31 -- 24\|23 --- 16\|15 --  8\|7  --  0\| -->
 
 # Arithmatic
 - add

@@ -31,8 +31,8 @@ module memory_t #(parameter BUS_WIDTH=8,
 
     logic [7:0]memoryCell[NUM_BYTES : 0];
 
+    assign readData = memoryCell[address];
     always @(posedge(clk)) begin
-        readData = writeEnable == 0 ? memoryCell[address] : {BUS_WIDTH{1'b0}};
         memoryCell[address] <= writeEnable ? writeData : memoryCell[address];
     end
 endmodule
