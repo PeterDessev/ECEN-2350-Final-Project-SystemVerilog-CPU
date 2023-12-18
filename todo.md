@@ -25,7 +25,7 @@ Every module (file) needs a simulation. Here is a list of all the simulations th
 | ALU_t.sv          |                    |                      |
 | registerFile_t.sv | registerFileSim.sv | x                    |
 | memory_t.sv       |                    |                      |
-| controlUnit.sv    |                    |                      |
+| controlUnit.sv    | controlUnitSim.sv  |                      |
 | genericDeMux.sv   |                    |                      |
  
 
