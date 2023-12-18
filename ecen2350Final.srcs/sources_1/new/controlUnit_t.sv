@@ -63,16 +63,33 @@ module controlUnit_t #(
     } states;
     states currentState = load0;
     states nextState = load0;
-
-    logic PCWrite;
-    logic branch;
+    
+    
+    
+    logic PCWrite = 1'b0;
+    logic branch = 1'b0;
     assign programCounterEnable = PCWrite || (branch && ALUStatus[1]);
 
     always @(posedge(clk)) begin
         currentState = nextState;
     end
-
+    
     always_comb begin
+        PCWrite = 1'b1;
+        memoryAddressSelect = 1'b0;
+        memoryWriteControl = 1'b0;
+        instructionRegWrite = 4'b0001;
+        memoryWriteControl = 1'b0;
+        regFileInputCSourceSelect = 1'b1;
+        regFileWriteDataSourceSelect = 1'b0;
+        registerFileWrite = 1'b0;
+        ALUSourceControlA = 1'b0;
+        ALUSourceControlB = 2'b01;
+        aluOpCode = {ALU_OP_CODE_WIDTH{1'b0}};
+        programCounterSourceSelect = 4'b0001;
+        nextState = load1;
+        branch = 1'b0;
+    
         case (currentState)
             load0: begin 
                 PCWrite = 1'b1;
