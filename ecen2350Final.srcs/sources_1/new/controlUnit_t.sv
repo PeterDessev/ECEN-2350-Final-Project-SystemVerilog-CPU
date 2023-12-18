@@ -27,9 +27,9 @@ module controlUnit_t #(
     parameter ALU_STATUS_WIDTH = 4,
     localparam INST_REG_WIDTH = $clog2(INSTRUCTION_WIDTH / BUS_WIDTH)
     ) (
-    input [7:0] InstructionCode,
-    input [ALU_STATUS_WIDTH - 1:0] ALUStatus,
-    input clk,
+    input logic [7:0] InstructionCode,
+    input logic [ALU_STATUS_WIDTH - 1:0] ALUStatus,
+    input logic clk,
     output logic registerFileWrite,
     output logic programCounterEnable,
     output logic ALUSourceControlA,
@@ -78,7 +78,7 @@ module controlUnit_t #(
                 PCWrite = 1'b1;
                 memoryAddressSelect = 1'b0;
                 memoryWriteControl = 1'b0;
-                instructionRegWrite = 2'b00;
+                instructionRegWrite = 4'b0001;
                 memoryWriteControl = 1'b0;
                 regFileInputCSourceSelect = 1'b1;
                 regFileWriteDataSourceSelect = 1'b0;
@@ -146,6 +146,10 @@ module controlUnit_t #(
                     3'b101: begin // singleArgMemOp
                         nextState = singleArgMemOp;
                     end
+
+                    default: begin
+                        nextState = load0;
+                    end
                 endcase
             end
 
@@ -170,8 +174,12 @@ module controlUnit_t #(
                         aluOpCode = 4'b0101;
                     end
 
-                    6'b000011: begin // xor
+                    6'b000100: begin // xor
                         aluOpCode = 4'b0111;
+                    end
+
+                    default: begin
+                        nextState = load0;
                     end
                 endcase
             end
@@ -204,6 +212,10 @@ module controlUnit_t #(
                     6'b000001: begin // ld
                         nextState = load;
                     end
+
+                    default: begin
+                        nextState = load0;
+                    end
                 endcase
             end
 
@@ -235,6 +247,10 @@ module controlUnit_t #(
 
                     6'b000001: begin // ld
                         nextState = load;
+                    end
+
+                    default: begin
+                        nextState = load0;
                     end
                 endcase
             end
@@ -330,7 +346,9 @@ module controlUnit_t #(
                 nextState = load0;
             end
 
-
+            default: begin
+                nextState = load0;
+            end
         endcase
     end
 endmodule
