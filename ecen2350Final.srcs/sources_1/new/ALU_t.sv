@@ -39,19 +39,19 @@ module ALU_t #(parameter BIT_WIDTH=8,
         case (op)
             4'b0000: begin  // add
                 q = a + b;
-                states = a + b == 0 ? 4'b0001 : 4'b0000;
+                status = a + b == 0 ? 4'b0001 : 4'b0000;
             end
             4'b0001: begin // sub
                 q = a - b;
-                states = a - b == 0 ? 4'b0010 : 4'b0000;
+                status = a - b == 0 ? 4'b0010 : 4'b0000;
             end
             4'b0010: begin // inc
                 q = b + 1;
-                states = b + 1 == 0 ? 4'b0001 : 4'b0000;
+                status = b + 1 == 0 ? 4'b0001 : 4'b0000;
             end
             4'b0011: begin // dec
                 q = b - 1;
-                states = b - 1 == 0 ? 4'b0010 : 4'b0000;
+                status = b - 1 == 0 ? 4'b0010 : 4'b0000;
             end
             4'b0100: // and
                 q = a & b;
