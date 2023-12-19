@@ -27,7 +27,7 @@ module ALU_t #(parameter BIT_WIDTH=8,
         input [BIT_WIDTH - 1:0]b,
         input [OP_CODE_WIDTH - 1:0] op,
         output logic [BIT_WIDTH - 1:0]q,
-        output [STATUS_WIDTH - 1:0]status
+        output logic [STATUS_WIDTH - 1:0]status
     );
 
     // logic [BIT_WIDTH-1:0]additionOut;
