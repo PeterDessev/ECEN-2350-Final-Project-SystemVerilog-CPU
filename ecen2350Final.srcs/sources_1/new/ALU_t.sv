@@ -93,6 +93,14 @@ module ALU_t #(parameter BIT_WIDTH=8,
                     status = 0;
                 end
             end
+            4'b1010: begin // pass b
+                q = b;
+                if (0 == b) begin
+                    status = 4'b0010;
+                end else begin
+                    status = 4'b0000;
+                end
+            end
             default: begin
                 q = 0;
                 status = 0;

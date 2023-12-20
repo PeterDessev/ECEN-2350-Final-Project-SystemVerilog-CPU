@@ -75,6 +75,8 @@ module ALUSim(
         a=8'b00001111; b=8'b10101010; op=9; // shr
         #5;
     
+        a=8'b00001111; b=8'b10101010; op=10; // pass b
+        #5;
         //Most of origonal test cases seen in TD were lost in a previoud file.
     
     end
