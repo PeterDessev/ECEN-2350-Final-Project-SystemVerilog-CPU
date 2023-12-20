@@ -54,7 +54,7 @@ module registerFile_t #(parameter BIT_WIDTH = 8,
     // Input registers
     // assign registerInputLogic[REGISTER_COUNT + 0] = inputSwitches;
     register #(.BIT_WIDTH(BIT_WIDTH)) switchRegister(
-        .writeEnable(1),
+        .writeEnable(1'b1),
         .clk(clk),
         .inData(inputSwitches),
         .outData(registerOutputLogic[REGISTER_COUNT + 0])
@@ -62,7 +62,7 @@ module registerFile_t #(parameter BIT_WIDTH = 8,
 
     // assign registerInputLogic[REGISTER_COUNT + 1] = {3'bz, buttons};
     register #(.BIT_WIDTH(BIT_WIDTH)) buttonRegister(
-        .writeEnable(1),
+        .writeEnable(1'b1),
         .clk(clk),
         .inData({3'b0, buttons}),
         .outData(registerOutputLogic[REGISTER_COUNT + 1])
