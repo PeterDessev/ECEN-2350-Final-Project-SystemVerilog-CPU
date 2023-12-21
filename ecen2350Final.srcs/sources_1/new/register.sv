@@ -21,6 +21,7 @@ module register #(parameter BIT_WIDTH=8)
     always @(posedge(clk)) begin
         if (writeEnable) begin
             outData <= inData;
+            $display("%m: Writing %h", inData);
         end
     end
     // logic [BIT_WIDTH-1:0] write;

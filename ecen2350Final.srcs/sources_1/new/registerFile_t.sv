@@ -103,7 +103,7 @@ module registerFile_t #(parameter BIT_WIDTH = 8,
     genericDeMux #(.WIDTH(BIT_WIDTH), 
                    .NUMBER(REGISTER_COUNT + 5)
                   ) writeDataDeMux(
-                        .sel(inAddrC), 
+                        .sel(inAddrC - 1), 
                         .in(inData), 
                         .enable(writeEnable),
                         .deMuxOut(registerInputLogic)
@@ -112,7 +112,7 @@ module registerFile_t #(parameter BIT_WIDTH = 8,
     genericDeMux #(.WIDTH(1),
                    .NUMBER(REGISTER_COUNT + 5)
                   ) writeEnableDeMux(
-                        .sel(inAddrC), 
+                        .sel(inAddrC - 1), 
                         .in(writeEnable),
                         .enable(writeEnable),
                         .deMuxOut(registerWriteEnableLogic) 

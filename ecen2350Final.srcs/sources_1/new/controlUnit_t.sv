@@ -18,7 +18,22 @@
 // Additional Comments:
 // 
 //////////////////////////////////////////////////////////////////////////////////
-
+`define setZeros() \
+    PCWrite = 1'b0; \
+    memoryAddressSelect = 1'b0; \
+    memoryWriteControl = 1'b0; \
+    instructionRegWrite = 4'b0000; \
+    memoryWriteControl = 1'b0; \
+    regFileInputCSourceSelect = 1'b0; \
+    regFileWriteDataSourceSelect = 1'b0; \
+    registerFileWrite = 1'b0; \
+    ALUSourceControlA = 1'b0; \
+    ALUSourceControlB = 2'b00; \
+    aluOpCode = {ALU_OP_CODE_WIDTH{1'b0}}; \
+    programCounterSourceSelect = 2'b00; \
+    branch = 1'b0; \
+    memoryWriteDataSelect = 1'b0; \
+    nextState = load0; 
 
 module controlUnit_t #(
     parameter INSTRUCTION_WIDTH = 32, 
@@ -30,6 +45,8 @@ module controlUnit_t #(
     input logic [7:0] InstructionCode,
     input logic [ALU_STATUS_WIDTH - 1:0] ALUStatus,
     input logic clk,
+    input rst,
+
     output logic registerFileWrite,
     output logic programCounterEnable,
     output logic ALUSourceControlA,
@@ -40,7 +57,8 @@ module controlUnit_t #(
     output logic memoryAddressSelect,
     output logic [1:0] programCounterSourceSelect,
     output logic regFileInputCSourceSelect,
-    output logic regFileWriteDataSourceSelect
+    output logic regFileWriteDataSourceSelect,
+    output logic memoryWriteDataSelect
     );
 
     typedef enum {
@@ -59,8 +77,8 @@ module controlUnit_t #(
         load,
         writeToReg,
         trippleArgArithOp,
-        storeTrippleArg,
-        writeAluToRegister
+        storeTrippleArgArith,
+        storeSingleArgArith
     } states;
     states currentState = start;
     states nextState = start;
@@ -69,80 +87,80 @@ module controlUnit_t #(
     logic branch = 1'b0;
     assign programCounterEnable = PCWrite || (branch && ALUStatus[1]);
 
-    always @(posedge(clk)) begin
-        currentState = nextState;
+    always @(posedge clk) begin // or posedge rst) begin
+        currentState = rst ? load0 : nextState;
     end
     
     // initial begin
-    logic memoryAddressSelect_internal = 1'b0;
-    logic memoryWriteControl_internal = 1'b0;
-    logic [INST_REG_WIDTH - 1:0] instructionRegWrite_internal = 4'b0001;
-    logic memoryWriteControl_internal = 1'b0;
-    logic regFileInputCSourceSelect_internal = 1'b1;
-    logic regFileWriteDataSourceSelect_internal = 1'b0;
-    logic registerFileWrite_internal = 1'b0;
-    logic ALUSourceControlA_internal = 1'b0;
-    logic [1:0] ALUSourceControlB_internal = 2'b01;
-    logic [ALU_OP_CODE_WIDTH - 1:0] aluOpCode_internal = {ALU_OP_CODE_WIDTH{1'b0}};
-    logic [1:0] programCounterSourceSelect_internal = 4'b0001;
+    // logic memoryAddressSelect = 1'b0;
+    // logic memoryWriteControl = 1'b0;
+    // logic [INST_REG_WIDTH - 1:0] instructionRegWrite = 4'b0001;
+    // logic regFileInputCSourceSelect = 1'b1;
+    // logic regFileWriteDataSourceSelect = 1'b0;
+    // logic registerFileWrite = 1'b0;
+    // logic ALUSourceControlA = 1'b0;
+    // logic [1:0] ALUSourceControlB = 2'b01;
+    // logic [ALU_OP_CODE_WIDTH - 1:0] aluOpCode = {ALU_OP_CODE_WIDTH{1'b0}};
+    // logic [1:0] programCounterSourceSelect = 4'b0001;
 
-    assign memoryAddressSelect = memoryAddressSelect_internal;
-    assign memoryWriteControl = memoryWriteControl_internal;
-    assign instructionRegWrite = instructionRegWrite_internal;
-    assign memoryWriteControl = memoryWriteControl_internal;
-    assign regFileInputCSourceSelect = regFileInputCSourceSelect_internal;
-    assign regFileWriteDataSourceSelect = regFileWriteDataSourceSelect_internal;
-    assign registerFileWrite = registerFileWrite_internal;
-    assign ALUSourceControlA = ALUSourceControlA_internal;
-    assign ALUSourceControlB = ALUSourceControlB_internal;
-    assign aluOpCode = aluOpCode_internal;
-    assign programCounterSourceSelect = programCounterSourceSelect_internal;
+    // assign memoryAddressSelect = memoryAddressSelect;
+    // assign memoryWriteControl = memoryWriteControl;
+    // assign instructionRegWrite = instructionRegWrite;
+    // assign regFileInputCSourceSelect = regFileInputCSourceSelect;
+    // assign regFileWriteDataSourceSelect = regFileWriteDataSourceSelect;
+    // assign registerFileWrite = registerFileWrite;
+    // assign ALUSourceControlA = ALUSourceControlA;
+    // assign ALUSourceControlB = ALUSourceControlB;
+    // assign aluOpCode = aluOpCode;
+    // assign programCounterSourceSelect = programCounterSourceSelect;
     // end
 
-    always_comb begin    
+    always @(*) begin
         case (currentState)
             start: begin
-                nextState = load0;
+                `setZeros
             end
 
             load0: begin 
-                PCWrite = 1'b1;
-                memoryAddressSelect_internal = 1'b0;
-                memoryWriteControl_internal = 1'b0;
-                instructionRegWrite_internal = 4'b0001;
-                memoryWriteControl_internal = 1'b0;
-                regFileInputCSourceSelect_internal = 1'b1;
-                regFileWriteDataSourceSelect_internal = 1'b0;
-                registerFileWrite_internal = 1'b0;
-                ALUSourceControlA_internal = 1'b0;
-                ALUSourceControlB_internal = 2'b01;
-                aluOpCode_internal = {ALU_OP_CODE_WIDTH{1'b0}};
-                programCounterSourceSelect_internal = 4'b0001;
+                `setZeros
+                PCWrite = 1'b1; 
+                instructionRegWrite = 4'b0001; 
+                ALUSourceControlB = 2'b01; 
+                programCounterSourceSelect = 2'b00; 
                 nextState = load1;
-                branch = 1'b0;
             end
 
             load1: begin
-                instructionRegWrite_internal = 4'b0010;
+                `setZeros
+                PCWrite = 1'b1; 
+                ALUSourceControlB = 2'b01; 
+                programCounterSourceSelect = 2'b00;
+                instructionRegWrite = 4'b0010;
                 nextState = load2;
             end
 
             load2: begin
-                instructionRegWrite_internal = 4'b0100;
+                `setZeros
+                PCWrite = 1'b1; 
+                ALUSourceControlB = 2'b01; 
+                programCounterSourceSelect = 2'b00;
+                instructionRegWrite = 4'b0100;
                 nextState = load3;
             end
 
             load3: begin
-                instructionRegWrite_internal = 4'b1000;
+                `setZeros
+                PCWrite = 1'b1; 
+                ALUSourceControlB = 2'b01; 
+                programCounterSourceSelect = 2'b00;
+                instructionRegWrite = 4'b1000;
                 nextState = decode;
             end
 
             decode: begin
-                PCWrite = 1'b0;
-                instructionRegWrite_internal = 4'b0000;
-                ALUSourceControlB_internal = 2'b11;
-                aluOpCode_internal = 2'b00;
-                case(InstructionCode[7-:3])
+                `setZeros
+                ALUSourceControlB = 2'b11;
+                case(InstructionCode[7:5])
                     3'b000: begin // trippleArgArithOp
                         // ALUSourceControlA = 1'b1;
                         // ALUSourceControlB = 2'b10;
@@ -185,28 +203,28 @@ module controlUnit_t #(
             end
 
             trippleArgArithOp: begin
-                ALUSourceControlA_internal = 1'b1;
-                ALUSourceControlB_internal = 2'b00;
-                nextState = storeTrippleArg;
-                case(InstructionCode[5:0])
-                    6'b000000: begin // add
-                        aluOpCode_internal = 4'b0000;
+                `setZeros
+                ALUSourceControlA = 1'b1;
+                nextState = storeTrippleArgArith;
+                case(InstructionCode[4:0])
+                    5'b00000: begin // add
+                        aluOpCode = 4'b0000;
                     end
 
-                    6'b000001: begin // sub
-                        aluOpCode_internal = 4'b0001;
+                    5'b00001: begin // sub
+                        aluOpCode = 4'b0001;
                     end
 
-                    6'b000010: begin // and
-                        aluOpCode_internal = 4'b0100;
+                    5'b00010: begin // and
+                        aluOpCode = 4'b0100;
                     end
 
                     6'b000011: begin // or
-                        aluOpCode_internal = 4'b0101;
+                        aluOpCode = 4'b0101;
                     end
 
                     6'b000100: begin // xor
-                        aluOpCode_internal = 4'b0111;
+                        aluOpCode = 4'b0111;
                     end
 
                     default: begin
@@ -215,32 +233,31 @@ module controlUnit_t #(
                 endcase
             end
 
-            storeTrippleArg: begin
-                regFileInputCSourceSelect_internal = 1'b0;
-                registerFileWrite_internal = 1'b1;
-                regFileWriteDataSourceSelect_internal = 1'b0;
+            storeTrippleArgArith: begin
+                `setZeros
+                registerFileWrite = 1'b1;
                 nextState = load0;
             end
 
             doubleArgInstOp: begin
-                ALUSourceControlA_internal = 1'b1;
-                ALUSourceControlB_internal = 2'b00;
-                aluOpCode_internal = 4'b0001;
+                `setZeros
+                ALUSourceControlA = 1'b1;
+                aluOpCode = 4'b0001;
                 branch = 1'b1;
-                programCounterSourceSelect_internal = 2'b01; 
+                programCounterSourceSelect = 2'b10; 
                 nextState = load0;
             end
             
             doubleArgMemOp: begin
-                ALUSourceControlA_internal = 1'b1;
-                ALUSourceControlB_internal = 2'b10;
-                aluOpCode_internal = 4'b0000;
-                case(InstructionCode[5:0])
-                    6'b000000: begin // st
+                `setZeros
+                ALUSourceControlA = 1'b1;
+                ALUSourceControlB = 2'b10;
+                case(InstructionCode[4:0])
+                    5'b00000: begin // st
                         nextState = store;
                     end
 
-                    6'b000001: begin // ld
+                    5'b00001: begin // ld
                         nextState = load;
                     end
 
@@ -251,34 +268,62 @@ module controlUnit_t #(
             end
 
             singleArgArithOp: begin
-                ALUSourceControlA_internal = 1'b1;
-                ALUSourceControlB_internal = 2'b00;
-                nextState = writeAluToRegister;
+                `setZeros
+                ALUSourceControlA = 1'b1;
+                ALUSourceControlB = 2'b00;
+                nextState = storeSingleArgArith;
+                case(InstructionCode[4:0])
+                    5'b00000: begin // inc
+                        aluOpCode = 4'b0010;
+                    end
+
+                    5'b00001: begin // dec
+                        aluOpCode = 4'b0011;
+                    end
+
+                    5'b00010: begin // not
+                        aluOpCode = 4'b0110;
+                    end
+
+                    5'b00011: begin // shl
+                        aluOpCode = 4'b1000;
+                    end
+
+                    5'b00100: begin // shr
+                        aluOpCode = 4'b1001;
+                    end
+                    default: begin
+                    end
+                endcase
             end
 
-            writeAluToRegister: begin
-                regFileInputCSourceSelect_internal = 1'b1;
-                regFileWriteDataSourceSelect_internal = 1'b1;
+            storeSingleArgArith: begin
+                `setZeros
+                regFileInputCSourceSelect = 1'b1;
+                registerFileWrite = 1'b1;
                 nextState = load0;
             end
 
             singleArgInstOp: begin
+                `setZeros
                 PCWrite = 1'b1;
-                programCounterSourceSelect_internal = 2'b10;
+                programCounterSourceSelect = 2'b10;
                 nextState = load0;
             end
 
             singleArgMemOp: begin
-                ALUSourceControlA_internal = 1'b1;
-                ALUSourceControlB_internal = 2'b10;
-                aluOpCode_internal = 4'b0000;
-                case(InstructionCode[5:0])
-                    6'b000000: begin // st
+                `setZeros
+                case(InstructionCode[4:0])
+                    5'b00000: begin // sti
+                        ALUSourceControlA = 1'b1;
+                        ALUSourceControlB = 2'b00;
                         nextState = store;
                     end
 
-                    6'b000001: begin // ld
-                        nextState = load;
+                    5'b00001: begin // ldi
+                        ALUSourceControlA = 1'b1;
+                        ALUSourceControlB = 2'b10;
+                        nextState = writeToReg;
                     end
 
                     default: begin
@@ -286,6 +331,56 @@ module controlUnit_t #(
                     end
                 endcase
             end
+                
+            store: begin
+                `setZeros
+                memoryWriteControl = 1'b1;
+                memoryAddressSelect = 1'b1;
+                nextState = load0;
+                case(InstructionCode[7:5])
+                    3'b010: begin // register
+                        nextState = load0;
+                    end
+
+                    3'b101: begin // immediate
+                        memoryWriteDataSelect = 1'b1;
+                        nextState = load0;
+                    end
+
+                    default: begin
+                        nextState = load0;
+                    end
+                endcase
+            end
+                
+            load: begin
+                `setZeros
+                memoryAddressSelect = 1'b1;
+                nextState = writeToReg;
+            end
+                
+            writeToReg: begin
+                `setZeros
+                registerFileWrite = 1'b1;
+                regFileInputCSourceSelect = 1'b1;
+                case(InstructionCode[7:5])
+                    3'b101: // Single argument, load into register from ALU register
+                        regFileWriteDataSourceSelect = 1'b0;
+
+                    default:
+                        regFileWriteDataSourceSelect = 1'b1;
+                endcase
+                nextState = load0;
+            end
+
+            default: begin
+                `setZeros
+                nextState = load0;
+            end
+        endcase
+    end
+endmodule
+
             // singleArg: begin
             //     if (InstructionCode[5] == 1'b1) begin // Single argument non arithmetic operation
             //         case(InstructionCode[5:0])
@@ -359,28 +454,3 @@ module controlUnit_t #(
             //         end
             //     endcase 
             // end
-                
-            store: begin
-                memoryWriteControl_internal = 1'b1;
-                memoryAddressSelect_internal = 1'b1;
-                nextState = load0;
-            end
-                
-            load: begin
-                memoryAddressSelect_internal = 1'b1;
-                nextState = writeToReg;
-            end
-                
-            writeToReg: begin
-                regFileWriteDataSourceSelect_internal = 1'b1;
-                registerFileWrite_internal = 1'b1;
-                regFileInputCSourceSelect_internal = 1'b1;
-                nextState = load0;
-            end
-
-            default: begin
-                nextState = load0;
-            end
-        endcase
-    end
-endmodule
