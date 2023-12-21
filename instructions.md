@@ -21,8 +21,8 @@
 |      |                                                                    |               | \|        \|        \|        \|        \|        \|        \|        \| |       |
 | jmp  | jumps to memory address Imm*                                       | jmp Imm       | \|10000000\|  0000  \|  0000  \|  0000  \|  0000  \|  ImmH  \|  ImmL  \| | x     |
 |      |                                                                    |               | \|        \|        \|        \|        \|        \|        \|        \| |       |
-| sti  | Stores the contents of $1 into memory at Imm                       | sti $1 Imm    | \|10100000\|  0000  \|   $1   \|  0000  \|  0000  \|  ImmH  \|  ImmL  \| | x     |
-| ldi  | Loads the contents of memory at Imm into $1                        | ldi $1 Imm    | \|10100001\|  0000  \|   $1   \|  0000  \|  0000  \|  ImmH  \|  ImmL  \| | x     |
+| sti  | Stores Imm into memory at $1                                       | sti $1 Imm    | \|10100000\|  0000  \|   $1   \|  0000  \|  0000  \|  ImmH  \|  ImmL  \| | x     |
+| ldi  | Loads Imm into $1                                                  | ldi $1 Imm    | \|10100001\|  0000  \|   $1   \|  0000  \|  0000  \|  ImmH  \|  ImmL  \| | x     |
 |      |                                                                    |               |                                                                          |       |
 
 This most significant 3 bits of an instruction have the following meanings:
