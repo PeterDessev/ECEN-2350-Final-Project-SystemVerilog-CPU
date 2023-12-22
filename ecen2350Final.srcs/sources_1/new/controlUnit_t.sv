@@ -1,22 +1,9 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
+// Engineer: Ben Jacobsen, Peter Dessev
 // 
 // Create Date: 12/07/2023 02:11:28 PM
-// Design Name: 
-// Module Name: controlUnit_t
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
+// Description: The control unit for the BP1 microprocessor/.
 //////////////////////////////////////////////////////////////////////////////////
 `define setZeros() \
     PCWrite = 1'b0; \
@@ -87,33 +74,9 @@ module controlUnit_t #(
     logic branch = 1'b0;
     assign programCounterEnable = PCWrite || (branch && ALUStatus[1]);
 
-    always @(posedge clk) begin // or posedge rst) begin
-        currentState = rst ? load0 : nextState;
+    always @(posedge(clk), posedge(rst)) begin 
+        currentState = rst ? start : nextState;
     end
-    
-    // initial begin
-    // logic memoryAddressSelect = 1'b0;
-    // logic memoryWriteControl = 1'b0;
-    // logic [INST_REG_WIDTH - 1:0] instructionRegWrite = 4'b0001;
-    // logic regFileInputCSourceSelect = 1'b1;
-    // logic regFileWriteDataSourceSelect = 1'b0;
-    // logic registerFileWrite = 1'b0;
-    // logic ALUSourceControlA = 1'b0;
-    // logic [1:0] ALUSourceControlB = 2'b01;
-    // logic [ALU_OP_CODE_WIDTH - 1:0] aluOpCode = {ALU_OP_CODE_WIDTH{1'b0}};
-    // logic [1:0] programCounterSourceSelect = 4'b0001;
-
-    // assign memoryAddressSelect = memoryAddressSelect;
-    // assign memoryWriteControl = memoryWriteControl;
-    // assign instructionRegWrite = instructionRegWrite;
-    // assign regFileInputCSourceSelect = regFileInputCSourceSelect;
-    // assign regFileWriteDataSourceSelect = regFileWriteDataSourceSelect;
-    // assign registerFileWrite = registerFileWrite;
-    // assign ALUSourceControlA = ALUSourceControlA;
-    // assign ALUSourceControlB = ALUSourceControlB;
-    // assign aluOpCode = aluOpCode;
-    // assign programCounterSourceSelect = programCounterSourceSelect;
-    // end
 
     always @(*) begin
         case (currentState)
@@ -162,25 +125,14 @@ module controlUnit_t #(
                 ALUSourceControlB = 2'b11;
                 case(InstructionCode[7:5])
                     3'b000: begin // trippleArgArithOp
-                        // ALUSourceControlA = 1'b1;
-                        // ALUSourceControlB = 2'b10;
-                        // aluOpCode = 2'b00;
                         nextState = trippleArgArithOp;
                     end
 
                     3'b001: begin // doubleArgInstOp (beq)
-                        // ALUSourceControlA = 1'b1;
-                        // ALUSourceControlB = 2'b00;
-                        // aluOpCode = 2'b01;
-                        // branch = 1;
-                        // PCSrc = 2'b01;
                         nextState = doubleArgInstOp;
                     end
 
                     3'b010: begin // doubleArgMemOp
-                        // ALUSourceControlA = 1'b1;
-                        // ALUSourceControlB = 2'b10;
-                        // aluOpCode = 2'b00;
                         nextState = doubleArgMemOp;
                     end
 
@@ -380,77 +332,3 @@ module controlUnit_t #(
         endcase
     end
 endmodule
-
-            // singleArg: begin
-            //     if (InstructionCode[5] == 1'b1) begin // Single argument non arithmetic operation
-            //         case(InstructionCode[5:0])
-            //             6'b100110: begin // jmp
-            //                 PCWrite = 1'b1;
-            //                 programCounterSourceSelect = 2'b10;
-            //                 nextState = load0;
-            //             end
-
-            //             6'b100111: begin // sti
-            //                 programCounterSourceSelect = 2'b10;
-            //                 nextState = load0;
-            //             end
-
-            //             6'b101000: begin // ldi
-            //                 PCWrite = 1'b1;
-            //                 programCounterSourceSelect = 2'b10;
-            //                 nextState = load0;
-            //             end
-            //         endcase
-                    
-            //     else // Single argument arithmetic operation
-            //         ALUSourceControlA = 1'b1;
-            //         ALUSourceControlB = 2'b00;
-            //         nextState = storeSingleArithmatic;
-            //         case (InstructionCode[5:0])
-            //             6'b000001: // inc
-            //                 aluOpCode = 4'b0010;
-
-            //             6'b000010: // dec
-            //                 aluOpCode = 4'b0011;
-
-            //             6'b000011: // not
-            //                 aluOpCode = 4'b0110;
-
-            //             6'b000100: // shl
-            //                 aluOpCode = 4'b1000;
-
-            //             6'b000101: // shr
-            //                 aluOpCode = 4'b1001;
-            //         endcase
-            //     end
-            // end
-
-            // storeSingleArithmatic: begin
-            //     regFileWriteDataSourceSelect = 2'b00;
-            //     registerFileWrite = 1'b1;
-            //     nextState = load0;
-            // end
-
-            // doubleArg: begin
-            //     ALUSourceControlA = 1'b1;
-            //     aluOpCode = 4'b0000;
-            //     case (InstructionCode[5:0])
-            //         6'b000000: begin // beq
-            //             ALUSourceControlB = 2'b00;
-            //             aluOpCode = 4'b0001;
-            //             branch = 1'b1;
-            //             programCounterSourceSelect = 2'b01; 
-            //             nextState = load0;
-            //         end
-
-            //         6'b000001: begin // st
-            //             ALUSourceControlB = 2'b10;
-            //             nextState = store;
-            //         end
-
-            //         6'b000010: begin // ld
-            //             ALUSourceControlB = 2'b10;
-            //             nextState = load;
-            //         end
-            //     endcase 
-            // end

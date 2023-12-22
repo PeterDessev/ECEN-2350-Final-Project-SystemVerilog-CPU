@@ -4,14 +4,8 @@
 // 
 // Create Date: 12/12/2023 03:53:09 PM
 // Module Name: registerFile_t
-// Description: A register file which takes the input of two register addresses for reading and one register address for writing, the clock, and the write enable. When write enable is high, the input 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
+// Description: A register file which takes the input of two register addresses for 
+//              reading and one register address for writing, the clock, and the write enable. 
 //////////////////////////////////////////////////////////////////////////////////
 
 module registerFile_t #(parameter BIT_WIDTH = 8, 
@@ -23,13 +17,15 @@ module registerFile_t #(parameter BIT_WIDTH = 8,
     input [BIT_WIDTH - 1:0]inData,
     input writeEnable,
     input clk,
+    input rst,
     output logic [BIT_WIDTH - 1:0]outDataA,
     output logic [BIT_WIDTH - 1:0]outDataB,
     input [7:0] inputSwitches,
     input [4:0] buttons,
     output logic [6:0] segment,
     output logic [3:0] segSelect,
-    output logic [7:0] LEDs
+    output logic [7:0] LEDs,
+    output logic [BIT_WIDTH - 1 : 0] debugOut [REGISTER_COUNT - 1 + 5 : 0]
     );
     // parameter int register
     // DFF flipFlopZero(.data(write[0]), .clk(clk), .Q(read[0]));
@@ -38,12 +34,24 @@ module registerFile_t #(parameter BIT_WIDTH = 8,
     logic [REGISTER_COUNT - 1 + 5 : 0][BIT_WIDTH - 1 : 0]registerInputLogic;
     logic [REGISTER_COUNT - 1 + 5 : 0]registerWriteEnableLogic;
 
+    assign debugOut[0] = registerOutputLogic[0];
+    assign debugOut[1] = registerOutputLogic[1];
+    assign debugOut[2] = registerOutputLogic[2];
+    assign debugOut[3] = registerOutputLogic[3];
+    assign debugOut[4] = registerOutputLogic[4];
+    assign debugOut[5] = registerOutputLogic[5];
+    assign debugOut[6] = registerOutputLogic[6];
+    assign debugOut[7] = registerOutputLogic[7];
+    assign debugOut[8] = registerOutputLogic[8];
+    // assign debugOut[9] = registerOutputLogic[9];
+
     genvar i;
     generate
         for (i = 0; i < REGISTER_COUNT; i++) begin
             register #(.BIT_WIDTH(BIT_WIDTH)) registerI(
                 .writeEnable(registerWriteEnableLogic[i]),
                 .clk(clk),
+                .rst(rst),
                 .inData(registerInputLogic[i]),
                 .outData(registerOutputLogic[i])
             );
@@ -56,6 +64,7 @@ module registerFile_t #(parameter BIT_WIDTH = 8,
     register #(.BIT_WIDTH(BIT_WIDTH)) switchRegister(
         .writeEnable(1'b1),
         .clk(clk),
+        .rst(rst),
         .inData(inputSwitches),
         .outData(registerOutputLogic[REGISTER_COUNT + 0])
     );
@@ -64,6 +73,7 @@ module registerFile_t #(parameter BIT_WIDTH = 8,
     register #(.BIT_WIDTH(BIT_WIDTH)) buttonRegister(
         .writeEnable(1'b1),
         .clk(clk),
+        .rst(rst),
         .inData({3'b0, buttons}),
         .outData(registerOutputLogic[REGISTER_COUNT + 1])
     );
@@ -73,6 +83,7 @@ module registerFile_t #(parameter BIT_WIDTH = 8,
     register #(.BIT_WIDTH(BIT_WIDTH)) segmentRegister(
         .writeEnable(registerWriteEnableLogic[REGISTER_COUNT + 2]),
         .clk(clk),
+        .rst(rst),
         .inData(registerInputLogic[REGISTER_COUNT + 2]),
         .outData(registerOutputLogic[REGISTER_COUNT + 2])
     );
@@ -81,6 +92,7 @@ module registerFile_t #(parameter BIT_WIDTH = 8,
     register #(.BIT_WIDTH(BIT_WIDTH)) segmentSelectionRegister(
         .writeEnable(registerWriteEnableLogic[REGISTER_COUNT + 3]),
         .clk(clk),
+        .rst(rst),
         .inData(registerInputLogic[REGISTER_COUNT + 3]),
         .outData(registerOutputLogic[REGISTER_COUNT + 3])
     );
@@ -89,6 +101,7 @@ module registerFile_t #(parameter BIT_WIDTH = 8,
     register #(.BIT_WIDTH(BIT_WIDTH)) ledRegister(    
         .writeEnable(registerWriteEnableLogic[REGISTER_COUNT + 4]),
         .clk(clk),
+        .rst(rst),
         .inData(registerInputLogic[REGISTER_COUNT + 4]),
         .outData(registerOutputLogic[REGISTER_COUNT + 4])
     );

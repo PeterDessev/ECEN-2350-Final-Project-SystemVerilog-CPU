@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 12/07/2023 02:19:31 PM
+// Create Date: 12/21/2023 07:21:44 PM
 // Design Name: 
-// Module Name: DFF
+// Module Name: flipflop
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -20,15 +20,14 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module DFF(
-    input D,
+module flipflop(
+    input data,
     input clk,
-    output logic Q
-    );
+    input rst,
+    output logic Q);
     
-    always @ (posedge(clk))
-    begin
-    Q <= D;
+    always @ (posedge clk, posedge rst) begin
+        Q <= rst ? 1'b0 : data;
     end
-    
 endmodule
+

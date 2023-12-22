@@ -1,22 +1,11 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
+// Engineer: Ben Jacobsen, Peter Dessev
 // 
 // Create Date: 12/14/2023 01:40:50 PM
-// Design Name: 
-// Module Name: genericDeMux
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
+// Description: De-multiplexor for the BP1 processor. Global enable pulls all outputs 
+//              to zero when low. Width is the number of bus lanes per output, and 
+//              number is the number of outputs
 //////////////////////////////////////////////////////////////////////////////////
 
 // Based On: https://electronics.stackexchange.com/questions/552516/how-to-build-large-multiplexers-using-systemverilog

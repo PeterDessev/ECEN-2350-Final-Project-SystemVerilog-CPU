@@ -11,15 +11,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="97.080 ns"></ZoomStartTime>
-      <ZoomEndTime time="115.437 ns"></ZoomEndTime>
-      <Cursor1Time time="349.000 ns"></Cursor1Time>
+      <ZoomStartTime time="934.390 ns"></ZoomStartTime>
+      <ZoomEndTime time="949.871 ns"></ZoomEndTime>
+      <Cursor1Time time="918.550 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="139"></NameColumnWidth>
-      <ValueColumnWidth column_width="126"></ValueColumnWidth>
+      <ValueColumnWidth column_width="118"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="12" />
+   <WVObjectSize size="17" />
    <wvobject fp_name="/TopSim/clkIn" type="logic">
       <obj_property name="ElementShortName">clkIn</obj_property>
       <obj_property name="ObjectShortName">clkIn</obj_property>
@@ -70,5 +70,25 @@
    <wvobject fp_name="/TopSim/dut/memory/memoryCell[120]" type="array">
       <obj_property name="ElementShortName">[120][7:0]</obj_property>
       <obj_property name="ObjectShortName">[120][7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TopSim/inputSwitches" type="array">
+      <obj_property name="ElementShortName">inputSwitches[7:0]</obj_property>
+      <obj_property name="ObjectShortName">inputSwitches[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TopSim/rst" type="logic">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TopSim/clkEnable" type="logic">
+      <obj_property name="ElementShortName">clkEnable</obj_property>
+      <obj_property name="ObjectShortName">clkEnable</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TopSim/manualClk" type="logic">
+      <obj_property name="ElementShortName">manualClk</obj_property>
+      <obj_property name="ObjectShortName">manualClk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TopSim/DEBUG" type="array">
+      <obj_property name="ElementShortName">DEBUG[7:0]</obj_property>
+      <obj_property name="ObjectShortName">DEBUG[7:0]</obj_property>
    </wvobject>
 </wave_config>

@@ -33,6 +33,7 @@ module registerFileSim(
     logic [regWidth - 1:0]inData;
     logic writeEnable;
     logic clk;
+    logic rst;
     logic [regWidth - 1:0]outDataA;
     logic [regWidth - 1:0]outDataB;
     logic [7:0] inputSwitches;
@@ -51,7 +52,7 @@ module registerFileSim(
     end
 
     initial begin
-        #5;
+//        #5;
         inAddrA = 0;
         inAddrB = 0;
         inAddrC = 0;

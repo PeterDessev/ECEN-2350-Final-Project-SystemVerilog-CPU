@@ -1,28 +1,18 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
+// Engineer: Ben Jacobsen, Peter Dessev
 // 
 // Create Date: 12/07/2023 02:11:28 PM
-// Design Name: 
-// Module Name: Top
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
+// Description: Top Level module for the BP1 processor. Most parameters are fully automated, 
+//              however, change them at your own risk. MEMORY_FILE_LOC should be changed to
+//              reflect the path of the desired bootloader file when uploading to the Basys.
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module Top #(parameter MEMORY_FILE_LOC = "") (
+module Top #(parameter MEMORY_FILE_LOC = "bootloader.dat") (
     input [7:0] inputSwitches,
     input [4:0] buttons,
+    // input [7:0] debugSwitches,
     input clkIn,
     input rst,
     input clkEnable,
@@ -30,7 +20,12 @@ module Top #(parameter MEMORY_FILE_LOC = "") (
     output [6:0] segment,
     output [3:0] segSelect,
     output [7:0] LEDs
+    //    output [7:0] DEBUG
     );
+
+    // logic rst = 0;
+    // clkEnable,
+    // manualClk,
 
     parameter int busWidth = 8;
     parameter int instructionWidth = 32;
@@ -39,9 +34,15 @@ module Top #(parameter MEMORY_FILE_LOC = "") (
     parameter int ALUStatusWidth = 4;
     parameter int registerAddressWidth = 4;
 
+    // Debug
+    logic [7 : 0] registerDebug[8 : 0];
+    // logic [7:0] debugMemorySelect = ;
+
+
     // Divided Clock
     logic clk;
-    assign clk = clkEnable ? clkIn : manualClk;
+    clockDiv #(.DIV_COUNT(10)) clockDivider(.clk(clkIn), .rst(rst), .cout(clk));
+//    assign clk = clkIn; // clkEnable ? clkIn : manualClk;
 
     // Register enable logic
     logic programCounterEnable;
@@ -92,6 +93,7 @@ module Top #(parameter MEMORY_FILE_LOC = "") (
     register #(.BIT_WIDTH(busWidth)) programCounter(
         .writeEnable(programCounterEnable),
         .clk(clk),
+        .rst(rst),
         .inData(pcNext),
         .outData(pcOut)
     );
@@ -114,6 +116,7 @@ module Top #(parameter MEMORY_FILE_LOC = "") (
             register #(.BIT_WIDTH(busWidth)) instructionRegI(
                 .writeEnable(instructionRegWrite[(instructionWidth / busWidth) - 1 - i]),
                 .clk(clk),
+                .rst(rst),
                 .inData(memoryOut),
                 .outData(instruction[(i + 1) * busWidth - 1 : i * busWidth])
             );
@@ -124,12 +127,14 @@ module Top #(parameter MEMORY_FILE_LOC = "") (
     register #(.BIT_WIDTH(busWidth)) memDataReg(
         .writeEnable(1'b1),
         .clk(clk),
+        .rst(rst),
         .inData(memoryOut),
         .outData(memDataRegOut)
     );
     register #(.BIT_WIDTH(busWidth)) ALUResult(
         .writeEnable(1'b1),
         .clk(clk),
+        .rst(rst),
         .inData(ALUout),
         .outData(aluResultOut)
     );
@@ -138,12 +143,14 @@ module Top #(parameter MEMORY_FILE_LOC = "") (
     register #(.BIT_WIDTH(busWidth)) registerFileOutA(
         .writeEnable(1'b1),
         .clk(clk),
+        .rst(rst),
         .inData(registerFileResultA),
         .outData(RegFileADataOut)
     );
     register #(.BIT_WIDTH(busWidth)) registerFileOutB(
         .writeEnable(1'b1),
         .clk(clk),
+        .rst(rst),
         .inData(registerFileResultB),
         .outData(RegFileBDataOut)
     );
@@ -207,6 +214,7 @@ module Top #(parameter MEMORY_FILE_LOC = "") (
             .inData(regFileWriteData),
             .writeEnable(registerFileWrite),
             .clk(clk),
+            .rst(rst),
             .outDataA(registerFileResultA),
             .outDataB(registerFileResultB),
             .inputSwitches(inputSwitches), 
@@ -214,19 +222,56 @@ module Top #(parameter MEMORY_FILE_LOC = "") (
             .segment(segment), 
             .segSelect(segSelect), 
             .LEDs(LEDs)
+            // .debugOut(registerDebug)
     );
     
     memory_t #(.BUS_WIDTH(busWidth), .MEM_INIT_FILE(MEMORY_FILE_LOC)) memory(
         .address(memoryAddress),
         .writeData(memoryWriteData),
+        // .debugAddress(inputSwitches),
         .writeEnable(memoryWriteControl),
         .clk(clk),
         .readData(memoryOut)
+        // .debugOut(DEBUG)
     );
     
     logic [7:0]InstructionCode;
     assign InstructionCode = instruction[31:24];
     controlUnit_t controlUnit(.*);
+
+    // // DEBUG
+    // genericMux #(.WIDTH(busWidth), .NUMBER(9)) debugMux (
+    //     .sel(debugSwitches),
+    //     .mux_in(registerDebug),
+    //     .out(DEBUG)
+    // );
+    
+    //    ila_BP1 your_instance_name (
+    //     .clk(clk), // input wire clk
+    
+    //     .probe0(programCounterEnable), // input wire [0:0]  probe0  
+    //     .probe1(registerFileWrite), // input wire [0:0]  probe1 
+    //     .probe2(memoryWriteControl), // input wire [0:0]  probe2 
+    //     .probe3(regFileInputCSourceSelect), // input wire [0:0]  probe3 
+    //     .probe4(regFileWriteDataSourceSelect), // input wire [0:0]  probe4 
+    //     .probe5(memoryAddressSelect), // input wire [0:0]  probe5 
+    //     .probe6(memoryWriteDataSelect), // input wire [0:0]  probe6 
+    //     .probe7(programCounterSourceSelect), // input wire [0:0]  probe7 
+    //     .probe8(registerDebug[0]), // input wire [7:0]  probe8 
+    //     .probe9(registerDebug[1]), // input wire [7:0]  probe9 
+    //     .probe10(registerDebug[2]), // input wire [7:0]  probe10 
+    //     .probe11(registerDebug[3]), // input wire [7:0]  probe11 
+    //     .probe12(pcOut), // input wire [7:0]  probe12 
+    //     .probe13(memDataRegOut), // input wire [7:0]  probe13 
+    //     .probe14(RegFileADataOut), // input wire [7:0]  probe14 
+    //     .probe15(RegFileBDataOut), // input wire [7:0]  probe15 
+    //     .probe16(aluOpCode[0]), // input wire [0:0]  probe16 
+    //     .probe17(aluOpCode[1]), // input wire [0:0]  probe17 
+    //     .probe18(aluOpCode[2]), // input wire [0:0]  probe18 
+    //     .probe19(aluOpCode[3]) // input wire [0:0]  probe19
+    // );
+    
+    
     always @(posedge(clk)) begin
 
     end

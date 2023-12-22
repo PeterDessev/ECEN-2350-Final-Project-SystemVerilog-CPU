@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="bootloaderSim_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="bootloaderSim" />
+            <top_module name="glbl" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="108,160 ps"></ZoomStartTime>
+      <ZoomEndTime time="114,921 ps"></ZoomEndTime>
+      <Cursor1Time time="106,784 ps"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="139"></NameColumnWidth>
+      <ValueColumnWidth column_width="110"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="18" />
+   <wvobject fp_name="/bootloaderSim/inputSwitches" type="array">
+      <obj_property name="ElementShortName">inputSwitches[7:0]</obj_property>
+      <obj_property name="ObjectShortName">inputSwitches[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/bootloaderSim/buttons" type="array">
+      <obj_property name="ElementShortName">buttons[4:0]</obj_property>
+      <obj_property name="ObjectShortName">buttons[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/bootloaderSim/clkIn" type="logic">
+      <obj_property name="ElementShortName">clkIn</obj_property>
+      <obj_property name="ObjectShortName">clkIn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/bootloaderSim/rst" type="logic">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/bootloaderSim/clkEnable" type="logic">
+      <obj_property name="ElementShortName">clkEnable</obj_property>
+      <obj_property name="ObjectShortName">clkEnable</obj_property>
+   </wvobject>
+   <wvobject fp_name="/bootloaderSim/manualClk" type="logic">
+      <obj_property name="ElementShortName">manualClk</obj_property>
+      <obj_property name="ObjectShortName">manualClk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/bootloaderSim/segment" type="array">
+      <obj_property name="ElementShortName">segment[6:0]</obj_property>
+      <obj_property name="ObjectShortName">segment[6:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/bootloaderSim/segSelect" type="array">
+      <obj_property name="ElementShortName">segSelect[3:0]</obj_property>
+      <obj_property name="ObjectShortName">segSelect[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/bootloaderSim/LEDs" type="array">
+      <obj_property name="ElementShortName">LEDs[7:0]</obj_property>
+      <obj_property name="ObjectShortName">LEDs[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/bootloaderSim/halfClk" type="other">
+      <obj_property name="ElementShortName">halfClk</obj_property>
+      <obj_property name="ObjectShortName">halfClk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/bootloaderSim/dut/InstructionCode" type="array">
+      <obj_property name="ElementShortName">InstructionCode[7:0]</obj_property>
+      <obj_property name="ObjectShortName">InstructionCode[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/bootloaderSim/dut/instruction" type="array">
+      <obj_property name="ElementShortName">instruction[31:0]</obj_property>
+      <obj_property name="ObjectShortName">instruction[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/bootloaderSim/dut/registerFile/registerOutputLogic" type="array">
+      <obj_property name="ElementShortName">registerOutputLogic[8:0][7:0]</obj_property>
+      <obj_property name="ObjectShortName">registerOutputLogic[8:0][7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/bootloaderSim/dut/pcOut" type="array">
+      <obj_property name="ElementShortName">pcOut[7:0]</obj_property>
+      <obj_property name="ObjectShortName">pcOut[7:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/bootloaderSim/dut/memory/address" type="array">
+      <obj_property name="ElementShortName">address[7:0]</obj_property>
+      <obj_property name="ObjectShortName">address[7:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/bootloaderSim/dut/controlUnit/currentState" type="array">
+      <obj_property name="ElementShortName">currentState[31:0]</obj_property>
+      <obj_property name="ObjectShortName">currentState[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/bootloaderSim/dut/memory/writeEnable" type="logic">
+      <obj_property name="ElementShortName">writeEnable</obj_property>
+      <obj_property name="ObjectShortName">writeEnable</obj_property>
+   </wvobject>
+   <wvobject fp_name="/bootloaderSim/dut/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+</wave_config>

@@ -1,25 +1,13 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
+// Engineer: Ben Jacobsen, Peter Dessev
 // 
 // Create Date: 12/14/2023 01:35:47 PM
-// Design Name: 
-// Module Name: genericMux
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
+// Description: Multiplexor for the BP1 processor. Width is the number of 
+//              bus lanes per input and number is the number of inputs
 //////////////////////////////////////////////////////////////////////////////////
 
-// Source: https://electronics.stackexchange.com/questions/552516/how-to-build-large-multiplexers-using-systemverilog
+// Based on: https://electronics.stackexchange.com/questions/552516/how-to-build-large-multiplexers-using-systemverilog
 module genericMux #(parameter WIDTH = 1, 
                     parameter NUMBER = 2, 
                     localparam SELECT_W = $clog2(NUMBER)) 

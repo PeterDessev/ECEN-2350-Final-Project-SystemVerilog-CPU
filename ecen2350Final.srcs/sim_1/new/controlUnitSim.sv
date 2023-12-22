@@ -31,8 +31,9 @@ module controlUnitSim(
     localparam halfClkTime = 1;
 
     logic [7:0] InstructionCode;
-    logic [ALU_STATUS_WIDTH - 1:0] ALUStatus = {ALU_STATUS_WIDTH{1'b0}};
+    logic [ALU_STATUS_WIDTH - 1:0] ALUStatus;
     logic clk;
+    logic rst;
 
     logic registerFileWrite;
     logic programCounterEnable;
@@ -45,6 +46,7 @@ module controlUnitSim(
     logic [1:0] programCounterSourceSelect;
     logic regFileInputCSourceSelect;
     logic regFileWriteDataSourceSelect;
+    logic memoryWriteDataSelect;
 
     controlUnit_t dut(.*);
 
@@ -56,6 +58,8 @@ module controlUnitSim(
     end
 
     initial begin
+        rst = 0;
+        ALUStatus = 0;
         #halfClkTime;
         // add
         InstructionCode = 8'b00000000;
@@ -78,10 +82,14 @@ module controlUnitSim(
         #(14 * halfClkTime);
                 
         
-        // beq
+        // beq when not equal
         InstructionCode = 8'b00100000;
         #(12 * halfClkTime);
-        
+        // beq when equal
+        ALUStatus = 4'b0010;
+        InstructionCode = 8'b00100000;
+        #(12 * halfClkTime);
+        ALUStatus = 4'b0000;
 
         // st 
         InstructionCode = 8'b01000000;

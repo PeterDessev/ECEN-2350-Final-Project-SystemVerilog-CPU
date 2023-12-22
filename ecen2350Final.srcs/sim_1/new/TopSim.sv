@@ -27,14 +27,16 @@ module TopSim(
 
     logic [7:0] inputSwitches = 0;
     logic [4:0] buttons = 0;
+    logic [7:0] debugSwitches = 0;
     logic clkIn;
-    logic rst = 0;
+    logic rst = 1;
     logic clkEnable = 1;
     logic manualClk = 0;
 
     logic [6:0] segment;
     logic [3:0] segSelect;
     logic [7:0] LEDs;
+    logic [7:0] DEBUG;
     
     Top #(.MEMORY_FILE_LOC("allinstructionsSim.dat")) dut(.*);
 
@@ -46,6 +48,8 @@ module TopSim(
         #halfClk;
     end
     initial begin
+        #1;
+        rst = 0;
         // Instruction test
         #(halfClk * 349);
         
@@ -56,6 +60,7 @@ module TopSim(
         #(halfClk * 10);
         inputSwitches = 8'b11111111;
         #(halfClk * 10);
+        inputSwitches = 8'b00000000;
 
         // Reset test
         rst = 1;
@@ -68,6 +73,23 @@ module TopSim(
             manualClk = 1;
             #halfClk;
             manualClk = 0;
+            #halfClk;
+        end
+        clkEnable = 1;
+        #(halfClk * 349);
+
+        // Extended IO test
+        inputSwitches = 8'b00000000;
+        #(halfClk * 50);
+        inputSwitches = 8'b00000001;
+        #(halfClk * 50);
+        inputSwitches = 8'b11111111;
+        #(halfClk * 50);
+        inputSwitches = 8'b00000000;
+
+        // Debug test
+        for(int i = 0; i < 10; i++) begin
+            debugSwitches = i;
             #halfClk;
         end
 
