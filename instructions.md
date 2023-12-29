@@ -1,3 +1,8 @@
+# Instructions
+This file details the instructions implemenmted in the BP1, what they do and how they are structured in machine code. While it is possible to read this file in a MarkDown viewer, it has been formatted such that it is most easily read in a plain text editor.
+
+## Instruction Table
+
 | Name | Description                                                        | Example       | Bit Map                                                                  | impld |
 | ---- | ------------------------------------------------------------------ | ------------- | ------------------------------------------------------------------------ | ----- |
 | bit  | Not an instruction, shows bit boundaries in the table              | N/A           | \|31 -- 24\|23 -- 20\|19 -- 16\|15 -- 12\|11 --  8\|7  --  5\|4  --  0\| |       |
@@ -25,6 +30,8 @@
 | ldi  | Loads Imm into $1                                                  | ldi $1 Imm    | \|10100001\|  0000  \|   $1   \|  0000  \|  0000  \|  ImmH  \|  ImmL  \| | x     |
 |      |                                                                    |               |                                                                          |       |
 
+## Instruction Groups
+
 This most significant 3 bits of an instruction have the following meanings:
 | bits | meaning                                      |
 | ---- | -------------------------------------------- |
@@ -36,30 +43,7 @@ This most significant 3 bits of an instruction have the following meanings:
 | 101  | Single argument memory operation             |
 | 110  | Reserved                                     |
 | 111  | Reserved                                     |
-<!-- Register file input A is connected to bits 23:20, B to 19:16, and C to {1: 19:16, 0: 15:12} -->
+
 > \*Imm in this case will be aligned to instruction space throlugh multiplication by 2, on 4 byte boundaries, unlike store and load commands, which are aligned on 1 byte boundaries.
 
-<!-- \|31 -- 24\|23 --- 16\|15 --  8\|7  --  0\| -->
-
-# Arithmatic
-- add
-- sub
-- inc
-- dec
-- and
-- or
-- not
-- xor
-- shl
-- shr
-
-# Register control
-- mov
-
-# Memory control
-- st
-- ld
-
-# Program flow
-- jmp
-- beq
+Register file input A is connected to bits 23:20, B to 19:16, and C to {1: 19:16, 0: 15:12} through the regFileCInputMux.
