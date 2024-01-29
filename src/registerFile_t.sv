@@ -113,10 +113,12 @@ module registerFile_t #(parameter BIT_WIDTH = 8,
 //    genericMux #(.WIDTH(BIT_WIDTH), .NUMBER(REGISTER_COUNT)) cMux(.sel(inAddrC), registerInputLogic, outDataA);
     assign outDataA = !writeEnable && inAddrA > 0 ? registerOutputLogic[inAddrA - 1] : {BIT_WIDTH{1'b0}};
     assign outDataB = !writeEnable && inAddrB > 0 ? registerOutputLogic[inAddrB - 1] : {BIT_WIDTH{1'b0}};
+
+    // Subtracting one allows to have 8 registers and a 0 register without requiring 5 bits
     genericDeMux #(.WIDTH(BIT_WIDTH), 
                    .NUMBER(REGISTER_COUNT + 5)
                   ) writeDataDeMux(
-                        .sel(inAddrC - 1), 
+                        .sel(inAddrC - 1'b1), 
                         .in(inData), 
                         .enable(writeEnable),
                         .deMuxOut(registerInputLogic)
@@ -125,7 +127,7 @@ module registerFile_t #(parameter BIT_WIDTH = 8,
     genericDeMux #(.WIDTH(1),
                    .NUMBER(REGISTER_COUNT + 5)
                   ) writeEnableDeMux(
-                        .sel(inAddrC - 1), 
+                        .sel(inAddrC - 1'b1), 
                         .in(writeEnable),
                         .enable(writeEnable),
                         .deMuxOut(registerWriteEnableLogic) 
