@@ -19,12 +19,12 @@ Source code files that need to be written and integrated
 Every module (file) needs a simulation. Here is a list of all the simulations that need to be done or are done.
 | File name         | Sim File name      | Simulation Completed |
 | ----------------- | ------------------ | -------------------- |
-| Top.sv            |                    |                      |
+| Top.sv            | TopSim.sv          | x                    |
 | Register.sv       |                    |                      |
 | genericMux.sv     |                    |                      |
-| ALU_t.sv          |                    |                      |
+| ALU_t.sv          | ALUSIM.sv          | x                    |
 | registerFile_t.sv | registerFileSim.sv | x                    |
-| memory_t.sv       |                    |                      |
+| memory_t.sv       | memorySim.sv       | x                    |
 | controlUnit.sv    | controlUnitSim.sv  | x (Could be better)  |
 | genericDeMux.sv   |                    |                      |
  
@@ -33,11 +33,11 @@ Every module (file) needs a simulation. Here is a list of all the simulations th
 A list of files that need to be debugged or have already been debugged.
 | File name         | Debugged |
 | ----------------- | -------- |
-| Top.sv            |          |
+| Top.sv            | x        |
 | Register.sv       | x        |
 | genericMux.sv     | x        |
-| ALU_t.sv          |          |
+| ALU_t.sv          | x        |
 | registerFile_t.sv | x        |
-| memory_t.sv       |          |
-| controlUnit.sv    |          |
+| memory_t.sv       | x        |
+| controlUnit.sv    | x        |
 | genericDeMux.sv   | x        |
