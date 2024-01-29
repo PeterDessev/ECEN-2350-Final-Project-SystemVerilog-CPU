@@ -8,10 +8,13 @@ A block diagram of the archtecture can be found below
 
 ![Block Diagram](Figures/darkModeBlockDiagram.png)
 
+# Vivado Project
+The BP1 was originally a Vivado project, however, the project has since been reorganized to a more conventional project. The `ecen2350Filan.xpr` xml file can still be openened using Vivado, and should also compile. Vivado will complain about the irregular file structure, but will build the project.
+
 # Control Unit FSM
 
 # Instructions
-The BP1 has many instructions, which are detailed in `instructions.md`. Each instruction is 32 bits long and little endian. Instructions are grouped roughly based on the number of arguments they take and which group of data they operate on. Those are 1, 2, and 3 argumnet instructions, and arithmetic, memory, and instruction data. 
+The BP1 has many instructions, which are detailed in `instructions.md`. Each instruction is 32 bits long and little endian. Instructions are grouped roughly based on the number of arguments they take and which group of data they operate on. Those are 1, 2, and 3 argument instructions, and arithmetic, memory, and instruction data. 
 
 # Next Steps
 - Increase word size to 16 bits.

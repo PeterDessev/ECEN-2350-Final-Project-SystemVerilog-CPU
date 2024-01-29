@@ -1,4 +1,11 @@
-ecen2350Final.runs/*
+# Just in case Vivado Generates something unwanted
 ecen2350Final.cache/*
-ecen2350Final.sim/*
+ecen2350Final.gen/*
+ecen2350Final.hw/*
 ecen2350Final.ip_user_files/*
+ecen2350Final.runs/*
+ecen2350Final.sim/*
+ecen2350Final.src/*
+
+# All build output
+build/*
